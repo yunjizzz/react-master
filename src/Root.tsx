@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Router from "./screens/Router";
+import { Outlet } from "react-router-dom";
 
-function App(){
+function Root(){
 
-   return( <div>
-    </div>)
+   return( <div><Outlet/></div>)
 
     // const [value, setValue] = useState("");
     // const onChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -25,4 +25,4 @@ function App(){
     // )
 }
 
-export default App;
+export default Root;
