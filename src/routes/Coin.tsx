@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -40,6 +40,18 @@ function Coin() {
     const [loading, setLoading] = useState(true);
     const {state} = useLocation<RouteState>(); // dom에서 보내주는 정보 확인 가능
     
+    useEffect(()=>{
+        (
+           async () => {
+                const json = await (await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)).json();
+                const priceData =  await (await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)).json()
+                console.log(priceData);
+           }
+        )();
+    },[]);
+
+    
+
     return (
     <Container>
         <Header>
