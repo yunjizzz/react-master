@@ -21,3 +21,11 @@
 ```
  import { ReactQueryDevtools } from 'react-query/devtools'
 ```
+
+### Charts
+
+[ChartSite](https://apexcharts.com/docs/installation/)
+
+```
+npm install --save react-apexcharts apexcharts
+```
