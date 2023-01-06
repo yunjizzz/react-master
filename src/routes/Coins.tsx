@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { fetchCoins } from "../api";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -53,7 +55,7 @@ const Img = styled.img`
   margin-right: 10px;
 `
 
-interface CoinInterface {
+interface ICoin {
   id: string,
   name: string,
   symbol: string,
@@ -65,27 +67,20 @@ interface CoinInterface {
 
 function Coins() {
 
-  const [coins, setCoins] = useState<CoinInterface[]>([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(()=>{
-    (async() => {
-      const response = await fetch("https://api.coinpaprika.com/v1/coins");
-      const json = await response.json();
-      console.log(json);
-      setCoins(json.slice(0,100));
-      setLoading(false);
-    })();
-  },[]);
-
-  console.log(coins);
+  // 로딩중이면 is Loading이 false다! 끝나면 data에 응답 데이터가 들어감
+  // reactQuery는 데이터를 캐시해서 저장하기 때문에 계속 요청하지 않는다.
+  // 뒤로가기 요청을 눌러도 Loading 버튼이 보이지 않음
+  const { isLoading, data }= useQuery<ICoin[]>("allCoins", fetchCoins);
+  console.log(isLoading, data);
+  
   
   return (
     <Container>
       <Header>
         <Title>Coins</Title>
       </Header>
-      {loading ?  <Loader>Loading...</Loader> : (<CoinsList>
-        {coins.map (coin => <Coin key={coin.id}>
+      {isLoading ?  <Loader>Loading...</Loader> : (<CoinsList>
+        {data?.slice(0, 100).map (coin => <Coin key={coin.id}>
           <Link to={{
             pathname: `/${coin.id}`,
             state:{ name : coin.name }
